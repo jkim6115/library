@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
 @Getter
+@Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Loan {
@@ -18,14 +19,4 @@ public class Loan {
   LocalDate loanDate;
   LocalDate dueDate;
   LoanStatus status;
-
-  @Builder
-  public Loan(Long userId, Long bookId, Long workerId, LocalDate loanDate, LocalDate dueDate) {
-    this.userId = userId;
-    this.bookId = bookId;
-    this.workerId = workerId;
-    this.loanDate = loanDate;
-    this.dueDate = dueDate;
-    this.status = LoanStatus.LOANED;
-  }
 }

@@ -5,19 +5,29 @@ import com.example.library.book.application.port.out.ModifyBookStatusPort;
 import com.example.library.book.domain.Book;
 import com.example.library.book.domain.BookStatus;
 import com.example.library.common.PersistenceAdapter;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @PersistenceAdapter
 public class BookPersistenceAdapter implements FindBookPort, ModifyBookStatusPort {
 
+  private final BookMapper bookMapper;
+  private final BookRepository bookRepository;
+
   @Override
   public Book findById(Long bookId) {
-    // TODO: DB 연동 후 실제 조회로 교체
-    throw new UnsupportedOperationException("DB 연동이 필요합니다.");
+    BookEntity bookEntity = bookRepository.findById(bookId)
+        .orElseThrow(EntityNotFoundException::new);
+
+    return bookMapper.mapToBook(bookEntity);
   }
 
   @Override
   public void updateStatus(Long bookId, BookStatus status) {
-    // TODO: DB 연동 후 실제 수정으로 교체
-    throw new UnsupportedOperationException("DB 연동이 필요합니다.");
+    bookRepository.save(BookEntity.builder()
+        .id(bookId)
+        .status(status)
+        .build());
   }
 }

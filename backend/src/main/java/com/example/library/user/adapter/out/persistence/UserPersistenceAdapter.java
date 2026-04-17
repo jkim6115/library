@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 @PersistenceAdapter
 public class UserPersistenceAdapter implements FindUserPort {
 
+  private final UserMapper userMapper;
   private final UserRepository userRepository;
 
   @Override
@@ -17,7 +18,6 @@ public class UserPersistenceAdapter implements FindUserPort {
     UserEntity userEntity = userRepository.findById(userId)
         .orElseThrow(EntityNotFoundException::new);
 
-    // TODO: DB 연동 후 실제 조회로 교체
-    throw new UnsupportedOperationException("DB 연동이 필요합니다.");
+    return userMapper.mapToUser(userEntity);
   }
 }
